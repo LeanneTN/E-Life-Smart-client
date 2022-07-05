@@ -3,37 +3,32 @@
         <template #brand>
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                 <img
-                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+                    src="../assets/images/logo.png"
                     alt="Lightweight UI components for Vue.js based on Bulma"
                 >
             </b-navbar-item>
         </template>
 
         <template #start>
-            <b-navbar-item href="#">
-                Home
+            <b-navbar-item href="#" v-show="loginAccount==null">
+                <b>&nbsp;主页&nbsp;</b>
             </b-navbar-item>
-            <b-navbar-item href="#">
-                Documentation
+            <b-navbar-item href="#" v-show="loginAccount==null">
+                <b>&nbsp;反馈&nbsp;</b>
             </b-navbar-item>
-            <b-navbar-dropdown label="Info">
-                <b-navbar-item href="#">
-                    About
-                </b-navbar-item>
-                <b-navbar-item href="#">
-                    Contact
-                </b-navbar-item>
-            </b-navbar-dropdown>
+            <b-navbar-item href="#" v-show="loginAccount==null">
+                <b>&nbsp;帮助&nbsp;</b>
+            </b-navbar-item>
         </template>
 
         <template #end>
-            <b-navbar-item tag="div">
+            <b-navbar-item tag="div" v-show="loginAccount==null">
                 <div class="buttons">
-                    <router-link class="button is-primary" to="/register">
-                        <strong>Sign up</strong>
+                    <router-link class="button is-primary" to="/login">
+                        <strong>登录</strong>
                     </router-link>
-                    <router-link class="button is-white" to="/login">
-                        <strong>Log in</strong>
+                    <router-link class="button is-gray" to="/register">
+                        <strong>注册</strong>
                     </router-link>
                 </div>
             </b-navbar-item>
@@ -42,8 +37,39 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { reqSignOut } from '@/api/index';
 export default {
-  name: 'Header',
+  name:'Header',
+  data() {
+    return {
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    //下线
+    async signOut(){
+      let res = await reqSignOut();
+      this.$store.dispatch('loginAccount', this.token);
+      if(res.status == 200){
+        //跳往主页
+        this.$router.push({name:'home'});
+      }else{
+        //跳往登录界面
+        this.$router.push({name:'login'});
+      }
+    }
+  },
+  computed:{
+    ...mapState({
+      //注入state参数
+      loginAccount: state=>state.account.loginAccount,
+      token: state=>state.account.token,
+    })
+  },
 }
 </script>
 

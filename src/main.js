@@ -5,6 +5,9 @@ import App from './App.vue'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
+//引入element-ui组件
+import { Avatar } from 'element-ui'
+
 //引入路由
 import router from '@/router'
 //引入仓库
@@ -12,7 +15,9 @@ import store from '@/store'
 
 Vue.config.productionTip = false
 
-Vue.use(Buefy)
+Vue.use(Buefy);
+
+Vue.use(Avatar);
 
 new Vue({
   render: h => h(App),

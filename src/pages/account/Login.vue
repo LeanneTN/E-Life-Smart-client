@@ -37,7 +37,7 @@
                 <span class="error-msg">{{codeMsg}}</span>
               </div>
 
-              <button @click="loginByPassword" class="btn">登&nbsp;&nbsp;录</button>
+              <b-button class="btn" type="is-primary" @click="loginByPassword">登&nbsp;&nbsp;录</b-button>
             </form>
 
             <form v-show="!showAccountForm" @submit.prevent>
@@ -50,17 +50,19 @@
               <div class="input-text clearFix">
                 <span class="icon"></span>
                 <input v-model="phoneCode" type="text" class="code" placeholder="验证码">
-                <input 
+                <b-button 
+                  type="is-primary"
                   ref="sendBtn" 
-                  class="sendPhoneCode" 
-                  type="button"
-                  value="获取验证码"
+                  class="sendPhoneCode"
                   @click="sendPhoneCode"
-                />
+                  :disabled="sendDisable"
+                >
+                  {{prompt}}
+                </b-button>
                 <span class="error-msg">{{phoneCodeMsg}}</span>
               </div>
 
-              <button class="btn" @click="loginByPhone">登&nbsp;&nbsp;录</button>
+              <b-button class="btn" type="is-primary" @click="loginByPhone">登&nbsp;&nbsp;录</b-button>
             </form>
 
             <div class="call clearFix">
@@ -98,6 +100,8 @@
         phoneCodeMsg : '',
         imgCode: '',
         sendCode: '',
+        sendDisable: false,
+        prompt: '获取验证码',
       }
     },
     methods: {
@@ -125,10 +129,11 @@
         //对表单数据进行判断
         let result = this.checkFormData(formData);
         //此时表单验证不通过
-        if(!res.code){      
-            this.userNameMsg = result.userNameMsg;
-            this.passwordMsg = result.passwordMsg;
-            this.codeMsg = result.codeMsg;
+        if(!result.status){   
+          console.log('表单验证未通过！');   
+          this.userNameMsg = result.userNameMsg;
+          this.passwordMsg = result.passwordMsg;
+          this.codeMsg = result.codeMsg;
         }
         //初步验证通过，向服务器发送登录请求
         else{ 
@@ -175,39 +180,18 @@
           return result;
         }
         //验证通过
-        res.code=true;
+        result.status=true;
         return result;
-      },
-
-      //校验手机号码
-      isPhone(phone) {
-        let myreg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-        if (!myreg.test(phone)) {
-            return false;
-        } else {
-            return true;
-        }
       },
 
       //发送手机验证码
       async sendPhoneCode(){
-        //手机号为空
-        if(!_util.checkValue('require',this.phone))
-          this.phoneMsg = '手机号不能为空！';
-        else if(!this.isPhone(this.phone))
-          this.phoneMsg = '请输入正确的手机号！'
-        //开始请求验证码
-        else{
-          //首先请求该号码是否存在
-          let res = await reqCheckPhone(this.phoneCode);
-          //这证明该手机号不存在
-          if(res.code == 200){
-            this.phoneMsg = '该手机号未绑定！';
-            return;
-          }
+        //手机号的校验要通过
+        let result = await this.checkPhone();
+        if(result){
           this.phoneMsg = '';
-          res = await reqPhoneCode(this.phone);
-          if(res.status == 200){
+          let res = await reqPhoneCode(this.phone);
+          if(res.code == 200){
             //成功获取验证码
             this.timer();
             this.sendCode = res.data;
@@ -217,74 +201,80 @@
 
       //手机验证码登录
       async loginByPhone(){
-        let formData={
-          phone : this.phone,
-          phoneCode : this.phoneCode,
-          sendCode : this.sendCode
-        };
-        //对表单数据进行判断
-        let result = this.checkPhoneFormData(formData);
-        //此时初次验证未通过
-        if(!result.status){ 
-          this.phoneMsg = res.phoneMsg;
-          this.phoneCodeMsg = res.phoneCodeMsg;
-        }
-        //初步验证通过，开始向服务器发送请求
-        else{
-          let res = await reqLoginByPhone(this.phone);
-          //登录成功
-          if(res.status == 200){
-            //将该用户的token存储到store中
-            this.$store.dispatch('token', res.data.token); 
-            //向服务器发送请求，获取该用户的account，保存到store中，以便后续使用
-            this.$store.dispatch('loginAccount', res.data.token);  
-            //进行页面跳转
-            this.$router.push({name:'main'});
+        //进行手机号和验证码的初步校验
+        let result = await this.checkPhone();
+        if(result){
+          this.phoneMsg = '';
+          if(this.checkPhoneCode()){
+            let res = await reqLoginByPhone(this.phone);
+            //登录成功
+            if(res.code == 200){
+              //将该用户的token存储到store中
+              this.$store.dispatch('token', res.data.token); 
+              //向服务器发送请求，获取该用户的account，保存到store中，以便后续使用
+              this.$store.dispatch('loginAccount', res.data.token);  
+              //进行页面跳转
+              this.$router.push({name:'main'});
+            }else if(res.code == 495){
+              this.phoneMsg = '该手机号未进行过绑定！';
+            }
           }
         }
       },
 
-      //检验手机登录表单：
-      checkPhoneFormData:function (formData) {
-        let result={
-          status: false,
-          phoneMsg: ' ',
-          phoneCodeMsg: ' '
-        };
-        if(!_util.checkValue('require',formData.phone)){
-          result.phoneMsg='手机号不能为空！';
-          return result;
+      //检查手机号是否正确
+      async checkPhone(){
+        if(!_util.checkValue('require',this.phone)){
+          this.phoneMsg='手机号不能为空！';
+          this.phoneCodeMsg='';
+          return false;
         }
-        else if(!_util.checkValue('require',formData.phoneCode)){
-          result.phoneCodeMsg='验证码不能为空！';
-          return result;
-        }else if(formData.phoneCode != formData.sendCode){
-          result.phoneCodeMsg='验证码错误！';
-          return result;
+        else if(!_util.isPhone(this.phone)){
+          this.phoneMsg='请输入正确的手机号！';
+          this.phoneCodeMsg='';
+          return false;
         }
-        //初步通过验证
-        result.status = true;
-        return result;
+        else{
+          //向服务器发请求，看这个手机号是否绑定过
+          let res = await reqCheckPhone(this.phone);
+          //这证明该手机号不存在
+          if(res.code == 200){
+            this.phoneMsg = '该手机号未绑定！';
+            this.phoneCodeMsg='';
+            return false;
+          }
+        }
+        return true;
+      },
+
+      //检查验证码是否符合规范
+      checkPhoneCode(){
+        if(!_util.checkValue('require',this.phoneCode)){
+          this.phoneCodeMsg='验证码不能为空！';
+          return false;
+        }
+        else if(this.phoneCode != this.sendCode){
+          this.phoneCodeMsg='验证码错误！';
+          return false;
+        }
+        console.log(this.phoneCode);
+        console.log(this.sendCode);
+        return true;
       },
 
       //点击获取验证码之后的倒计时
       timer() {
         if(this.wait == 0){
-          this.$refs.sendBtn.disabled = true;
-          this.$refs.sendBtn.style.borderColor="1e9fff";
-          this.$refs.sendBtn.style.background="1e9fff";
-          this.$refs.sendBtn.style.cursor="pointer";
-          this.$refs.sendBtn.value = '获取验证码';
+          this.sendDisable = false;
+          this.wait = 60
+          this.prompt = '获取验证码';
         }else{
-          this.$refs.sendBtn.disabled = true;
-          this.$refs.sendBtn.style.borderColor="fbfbfb";
-          this.$refs.sendBtn.style.background="#ccc";
-          this.$refs.sendBtn.style.cursor="not-allowed";
-          this.$refs.sendBtn.value = `${this.wait}秒后重发`;
+          this.sendDisable = true;
+          this.prompt = `${this.wait}秒后重发`
           this.wait--;
           setTimeout(() => {this.timer()}, 1000);
         }
-    }
+      }
     },
   }
 </script>
@@ -303,12 +293,14 @@
 
     .login {
       width: 100%;
-      height: 487px;
+      height: 100%;
       margin: 0 auto;
-      background: url(../../assets/images/loginbg.jpg) no-repeat;
+      background: url(../../assets/images/login/loginbg.png) no-repeat;
     }
 
     .loginform {
+      border-radius: 8px;
+      box-shadow: 4px 4px 5px #888888;
       width: 420px;
       height: 406px;
       box-sizing: border-box;
@@ -343,7 +335,7 @@
           .current {
             border-bottom: none;
             border-top-color: #28a3ef;
-            color: #e1251b;
+            color: #44A0FF;
           }
         }
       }
@@ -384,11 +376,11 @@
             }
 
             .user{
-              background: url(../../assets/images/icons.png) no-repeat -10px -201px;
+              background: url(../../assets/images/login/icons.png) no-repeat -10px -201px;
             }
 
             .pwd {
-              background: url(../../assets/images/icons.png) no-repeat -72px -201px;
+              background: url(../../assets/images/login/icons.png) no-repeat -72px -201px;
             }
 
             .code{
@@ -399,12 +391,8 @@
               width: 100px;
               height: 32px;
               margin-left: 25px;
-              background-color: #e1251b;
-              border-radius: 2px;
               font-size: 14px;
               font-family: 微软雅黑;
-              border: 1px solid #e1251b;
-              color: #fff;
               cursor: pointer;
             }
 
@@ -439,14 +427,10 @@
 
           .btn {
             margin-top: 15px;
-            background-color: #e1251b;
             padding: 6px;
-            border-radius: 0;
             font-size: 16px;
             font-family: 微软雅黑;
             word-spacing: 4px;
-            border: 1px solid #e1251b;
-            color: #fff;
             width: 100%;
             height: 36px;
             outline: none;

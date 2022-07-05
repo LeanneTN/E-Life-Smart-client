@@ -57,6 +57,19 @@ export const reqRegister = (userName,password)=>{
   })
 }
 
+//下线
+export const reqSignOut = ()=>{
+  //发请求：axios发请求返回Promise对象
+  return requests({
+    url: '/user/logout',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+  })
+}
+
 //获取手机验证码
 export const reqPhoneCode = (phoneNumber)=>{
   return requests({
@@ -87,7 +100,7 @@ export const reqBindPhone = (phoneNumber)=>{
 //使用手机号进行登录
 export const reqLoginByPhone = (phoneNumber)=>{
   return requests({
-    url: '/user/phone/login_by_phone',
+    url: '/user/login_by_phone',
     method: 'post',
     params: {
       phoneNumber,
@@ -117,15 +130,6 @@ export const reqUpdateAccount = (account)=>{
       listOption: account.listOption,
       bannerOption: account.bannerOption
     }
-  })
-}
-
-//下线
-export const reqSignOut = ()=>{
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/user/sign_out',
-    method: 'post',
   })
 }
 

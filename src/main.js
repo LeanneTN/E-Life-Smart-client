@@ -6,7 +6,7 @@ import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
 //引入element-ui组件
-import { Avatar, Badge, Button, Image, Dialog} from 'element-ui'
+import { Avatar, Badge, Button, Image, Dialog, DatePicker, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select} from 'element-ui'
 
 //引入路由
 import router from '@/router'
@@ -22,6 +22,15 @@ Vue.use(Badge);
 Vue.use(Button);
 Vue.use(Image);
 Vue.use(Dialog);
+Vue.use(DatePicker);
+Vue.use(Form);
+Vue.use(Input);
+Vue.use(FormItem);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.use(Option);
+Vue.use(Col);
+Vue.use(Select);
 
 new Vue({
   render: h => h(App),

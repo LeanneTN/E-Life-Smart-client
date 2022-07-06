@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column1">
       <div class="account-info">
-        <div class="avatar" @click="changeAvatar"> 
+        <div class="avatar" @click="goMyAccount"> 
           <el-avatar :size="80" :src="circleUrl"></el-avatar>
         </div>
         <h6>{{loginAccount.userName}}</h6>
@@ -20,13 +20,7 @@
     </div>
     <div class="column2">
       <section>
-        <b-carousel
-            :indicator="indicator"
-            :indicator-background="indicatorBackground"
-            :indicator-inside="indicatorInside"
-            :indicator-mode="indicatorMode"
-            :indicator-position="indicatorPosition"
-            :indicator-style="indicatorStyle">
+        <b-carousel>
             <b-carousel-item v-for="(imgPath, i) in imgsPath" :key="i">
                 <section>
                   <img class="news" :src="imgPath">
@@ -85,8 +79,8 @@ export default {
     })
   },
   methods: {
-    changeAvatar(){
-      console.log('修改头像')
+    goMyAccount(){
+      this.$router.push({name: 'accountInfo'});
     },
   },
 }

@@ -52,7 +52,7 @@ export default new VueRouter({
     {
       path:'/user/accountInf',
       component:AccountInfo,
-      name:'accountInf'
+      name:'accountInfo'
     },
 
     {

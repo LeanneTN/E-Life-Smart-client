@@ -6,7 +6,7 @@
           class="topic-img"
           style="width: 192px; height: 120px; border-radius: 2px"
           :src="topicData.img"
-          :fit="cover"></el-image>
+          fit="cover"></el-image>
       </div>
 
       <div class="column inner-box-info">

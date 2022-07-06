@@ -84,7 +84,7 @@ export const reqPhoneCode = (phoneNumber)=>{
 //检查手机号是否存在
 export const reqCheckPhone = (phoneNumber)=>{
   return requests({
-    url: `/user/phone/${phoneNumber}`,
+    url: `/user/check_phone/${phoneNumber}`,
     method: 'get',
   })
 }
@@ -92,7 +92,7 @@ export const reqCheckPhone = (phoneNumber)=>{
 //为当前帐号绑定手机号
 export const reqBindPhone = (phoneNumber)=>{
   return requests({
-    url: `/user/phone/${phoneNumber}`,
+    url: `/user/bind_phone/${phoneNumber}`,
     method: 'post',
   })
 }

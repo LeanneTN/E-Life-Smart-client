@@ -58,7 +58,7 @@ export const reqRegister = (userName,password)=>{
 }
 
 //下线
-export const reqSignOut = ()=>{
+export const reqSignOut = (token)=>{
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/logout',

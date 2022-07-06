@@ -126,7 +126,7 @@
 
                 <hr class="dropdown-divider" aria-role="menuitem">
 
-                <b-dropdown-item value="logout" aria-role="menuitem">
+                <b-dropdown-item @click="logout" value="logout" aria-role="menuitem">
                     <b-icon icon="logout"></b-icon>
                     注销
                 </b-dropdown-item>
@@ -170,7 +170,9 @@ export default {
     },
 
     //下线
-    async signOut(){
+    async logout(){
+        console.log('准备下线');
+        console.log(this.token);
       let res = await reqSignOut();
       this.$store.dispatch('loginAccount', this.token);
       if(res.status == 200){

@@ -7,16 +7,15 @@
         </div>
         <h6>{{loginAccount.userName}}</h6>
         <div>
-          <a href="#">个人信息</a>
+          <router-link class="link" :to="{name: 'accountInfo'}">个人中心</router-link>
+          <!-- <a href="#">个人中心</a> -->
           &nbsp;
           <b>|</b>
           &nbsp;
           <a href="#">退出登录</a>
         </div>
       </div>
-      <div class="quick-link">
-        快捷功能
-      </div>
+      <QuickLink/>
     </div>
     <div class="column2">
       <section>
@@ -34,6 +33,7 @@
     </div>
     <div class="column3">
       <Autocomplete/>
+      <Hot/>
     </div>
   </div>
 </template>
@@ -42,11 +42,15 @@
 import { mapState } from 'vuex';
 import Autocomplete from '@/components/home/Autocomplete.vue'
 import TopicCard from '@/components/home/TopicCard.vue'
+import Hot from '@/components/home/Hot.vue'
+import QuickLink from '@/components/home/QuickLink.vue'
 export default {
   name:'Main',
   components: {
     Autocomplete,
-    TopicCard
+    TopicCard,
+    Hot,
+    QuickLink,
   },
   data () {
     return {
@@ -87,9 +91,6 @@ export default {
 </script>
 
 <style scoped lang='less'>
-
-
-
   .columns{
     background: #E6E6E6;
     margin-bottom: 0;
@@ -108,14 +109,6 @@ export default {
         .avatar :hover {
           cursor: pointer;
         }
-      }
-
-      .quick-link{
-        margin-top: 6%;
-        padding: 6%;
-        background: #f5f5f5;
-        border-radius: 4px;
-        font-size: 14px;
       }
     }
 

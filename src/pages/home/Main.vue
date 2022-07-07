@@ -2,17 +2,18 @@
   <div class="columns">
     <div class="column1">
       <div class="account-info">
-        <div class="avatar" @click="goMyAccount"> 
+        <div class="avatar" @click="goPage('accountInfo')"> 
           <el-avatar :size="80" :src="circleUrl"></el-avatar>
         </div>
         <h6>{{loginAccount.userName}}</h6>
         <div>
-          <router-link class="link" :to="{name: 'accountInfo'}">个人中心</router-link>
-          <!-- <a href="#">个人中心</a> -->
+          <router-link class="link" :to="{name: 'accountInfo'}">
+            个人中心
+          </router-link>
           &nbsp;
           <b>|</b>
           &nbsp;
-          <a href="#">退出登录</a>
+          <a href="#" @click="logout">退出登录</a>
         </div>
       </div>
       <QuickLink/>
@@ -83,9 +84,24 @@ export default {
     })
   },
   methods: {
-    goMyAccount(){
-      this.$router.push({name: 'accountInfo'});
+    //进行页面跳转的函数
+    goPage(page){
+      this.$router.push({name: page});
     },
+    //下线
+    async logout(){
+        console.log('准备下线');
+        console.log(this.token);
+      let res = await reqSignOut();
+      this.$store.dispatch('loginAccount', this.token);
+      if(res.status == 200){
+        //跳往主页
+        this.$router.push({name:'home'});
+      }else{
+        //跳往登录界面
+        this.$router.push({name:'login'});
+      }
+    }
   },
 }
 </script>

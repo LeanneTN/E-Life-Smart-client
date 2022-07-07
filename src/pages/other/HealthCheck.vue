@@ -1,15 +1,15 @@
 <template>
     <div>
         <!-- 这是健康打卡界面 -->
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form" label-width="80px">
             <el-form-item label="所在位置">
                 <el-input v-model="location"></el-input>
             </el-form-item>
             <el-form-item label="当前区域风险等级">
                 <el-select v-model="area_level" placeholder="请选择区域风险等级">
-                    <el-option label="区域一" value="低风险"></el-option>
-                    <el-option label="区域二" value="中风险"></el-option>
-                    <el-option label="区域二" value="高风险"></el-option>
+                    <el-option label="低风险" value="0"></el-option>
+                    <el-option label="中风险" value="1"></el-option>
+                    <el-option label="高风险" value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="当前时间">
@@ -35,13 +35,14 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">立即提交</el-button>
-                <el-button>取消</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script>
+import { healthCheckSubmit } from '@/api';
+import { mapState } from 'vuex';
 export default {
     name: "HealthCheck",
     data() {
@@ -55,9 +56,16 @@ export default {
         };
     },
     methods:{
-      onsubmit(){
-
+      async onSubmit(){
+        let res = await healthCheckSubmit(this.uid, this.temp,
+        this.location, this.time, this.other_info, this.area_level, this.token)
+        console.log(res);
       }
+    },
+    computed:{
+      ...mapState({
+        token: state=>state.account.token
+      })
     }
 };
 </script>

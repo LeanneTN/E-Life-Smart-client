@@ -440,3 +440,38 @@ export const volunteerGetter = (token) =>{
     }
   })
 }
+
+//上传志愿者信息
+export const volunteerApply = (uid, name, free_time, token) =>{
+  return requests({
+    url: '/volunteer/apply',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    data:{
+      uid,
+      name,
+      free_time
+    }
+  })
+}
+
+//接收志愿服务任务
+export const volunteerMissionGet = (token, uid, name, free_time, total_time) =>{
+  return requests({
+    url: '/volunteer/get_volunteer_tasks',
+    method: 'get',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    data:{
+      uid,
+      name,
+      free_time,
+      total_time
+    }
+  })
+}

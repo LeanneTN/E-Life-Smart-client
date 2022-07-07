@@ -22,9 +22,55 @@
           <section>
             <b-field label="登录手机">
               <b-input v-model="loginAccount.phoneNumber" disabled v-show="loginAccount.phoneNumber!=null"></b-input>
-              <b-button class="change-btn" type="is-success" outlined v-show="loginAccount.phoneNumber!=null">更换号码</b-button>
+              <b-button class="change-btn" type="is-success" outlined v-show="loginAccount.phoneNumber!=null" @click="dialogVisible = true">更换号码</b-button>
               <b-input value="未进行绑定" disabled v-show="loginAccount.phoneNumber==null"></b-input>
-              <b-button class="change-btn" type="is-primary" outlined v-show="loginAccount.phoneNumber==null">立即绑定</b-button>
+              <b-button class="change-btn" type="is-primary" outlined v-show="loginAccount.phoneNumber==null" @click="dialogVisible = true">立即绑定</b-button>
+
+              <el-dialog
+                title="绑定手机号"
+                :visible.sync="dialogVisible"
+                width="30%">
+                <section>
+                  <div class="bind-phone">
+                    <b-field 
+                      :type="phoneStatus" 
+                      :message="phoneMsg"
+                      label="手机号" 
+                      label-position="on-border"
+                    >
+                      <b-input v-model="bindPhone" placeholder="手机号"></b-input>
+                    </b-field>
+                  </div>
+
+                  <div class="bind-phone">
+                    <b-field 
+                      :type="codeStatus" 
+                      :message="codeMsg"
+                      label="验证码" 
+                      label-position="on-border" 
+                      grouped
+                    >
+                      <b-input class="code-input" v-model="code" placeholder="请输入验证码"></b-input>
+                      <p class="control">
+                          <b-button 
+                            type="is-primary"
+                            ref="sendBtn" 
+                            class="button is-primary"
+                            @click="sendPhoneCode"
+                            :disabled="sendDisable"
+                          >
+                            {{prompt}}
+                          </b-button>
+                      </p>
+                    </b-field>
+                  </div>
+
+                </section>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="bindPhoneNumber">绑 定</el-button>
+                </span>
+              </el-dialog>
             </b-field>
             <b-field label="登录密码">
               <b-input value="********" disabled></b-input>
@@ -145,11 +191,26 @@
 
 <script>
 import { mapState } from 'vuex';
+import _util from "@/utils/util";
+import { reqPhoneCode, reqCheckPhone } from "@/api";
 export default {
   name:'AccountInfo',
   data() {
     return {
-      imageUrl: ''
+      dialogVisible: false, //验证手机号的Dialog是否显示
+      bindPhone: '',  //准备绑定的手机号
+      passedPhone: '',  //刚刚通过校验的手机号
+      phoneMsg: '', //有关手机号的错误提示
+      phoneStatus: '',
+      code: '',  //填写的验证码
+      codeMsg: '',  //有关验证码的错误提示
+      codeStatus: '',
+      sendCode: '', //真实的验证码
+      wait: 60, //倒计时
+      sendDisable: false, //发送按钮是否可用
+      prompt: '获取验证码',
+
+
     };
   },
   computed:{
@@ -160,7 +221,102 @@ export default {
     })
   },
   methods: {
+    //获取验证码
+    async sendPhoneCode(){
+      let result = await this.checkPhone();
+      if(result){
+        this.sendCode= '1234';
 
+        this.timer();
+        // let res = await reqPhoneCode(this.passedPhone);
+        // if(res.status == 200)
+        //   this.sendCode = res.data
+      }
+    },
+
+    //为账号绑定手机
+    bindPhoneNumber(){
+      if(this.code){
+        //再校验一边手机号(防止更改)
+        if(this.passedPhone == this.bindPhone){
+          if(this.code == this.sendCode){
+            this.dialogVisible = false;
+            this.$message({
+              message: '绑定成功！',
+              type: 'success'
+            });
+            this.$store.dispatch('loginAccount', this.token);
+            this.clearBindPhone();
+          }else{
+            this.codeMsg="验证码错误！";
+            this.codeStatus="is-danger";
+          }
+        }else{
+          this.phoneMsg="请重新获取验证码！"
+          this.phoneStatus="is-danger";
+        }
+      }else{
+        this.codeMsg="验证码不能为空";
+        this.codeStatus="is-danger";
+      }
+    },
+
+    //检查手机号正不正常
+    async checkPhone(){
+      this.codeMsg='';
+      this.codeStatus='';
+      //首先检验手机号是否合法
+      if(!_util.isPhone(this.bindPhone)){
+        console.log(this.bindPhone)
+        this.phoneMsg = '请输入正确的手机号！';
+        this.phoneStatus = 'is-danger';
+        return false;
+      }
+      else{
+        //检查手机号是否已经被占用了
+        let res = await reqCheckPhone(this.bindPhone);
+        if(res.code == 200){
+          this.phoneMsg = '';
+          this.phoneStatus = 'is-success';
+          this.passedPhone = this.bindPhone;
+          return true;
+        }else{
+          this.phoneMsg = '该手机号已进行过绑定！';
+          this.phoneStatus = 'is-danger';
+          return false;
+        }
+      }  
+    },
+
+    //点击获取验证码之后的倒计时
+    timer() {
+      if(this.wait == 0){
+        this.sendDisable = false;
+        this.wait = 60
+        this.prompt = '获取验证码';
+      }else{
+        this.sendDisable = true;
+        this.prompt = `${this.wait}秒后重发`
+        this.wait--;
+        setTimeout(() => {this.timer()}, 1000);
+      }
+    },
+
+    //清空绑定手机号的表单
+    clearBindPhone(){
+      this.bindPhone = '';
+      this.passedPhone = '';
+      this.phoneMsg = '';
+      this.phoneStatus = '';
+      this.code = '';
+      this.codeMsg = '';
+      this.codeStatus = '';
+      this.sendCode = '';
+      this.wait = 60;
+      this.sendDisable = false;
+      this.prompt = '获取验证码';
+    }
+              
   },
 }
 </script>
@@ -185,6 +341,12 @@ export default {
       }
       .account-btn{
         float: right;
+      }
+      .bind-phone{
+        padding-bottom: 20px;
+        .code-input{
+          max-width: 204px;
+        }
       }
     }
   }

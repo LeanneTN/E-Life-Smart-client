@@ -1,5 +1,6 @@
 <template>
     <div id="health">
+        <h2 style="text-align:center; font-size: larger;">每日健康申报</h2>
         <!-- 这是健康打卡界面 -->
         <el-form ref="form" :label-position="labelPosition">
             <el-form-item label="您的uid">
@@ -59,6 +60,7 @@ export default {
         let res = await healthCheckSubmit(this.uid, this.temp,
         this.location, this.time, this.other_info, this.area_level, this.token)
         console.log(res);
+        alert("打卡成功")
       }
     },
     computed:{

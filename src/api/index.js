@@ -427,3 +427,16 @@ export const healthCheckSubmit = (uid, temp,
     }
   })
 }
+
+//下面是志愿者管理模块
+//获取志愿者信息
+export const volunteerGetter = (token) =>{
+  return requests({
+    url: '/volunteer/get_volunteer',
+    method: 'get',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    }
+  })
+}

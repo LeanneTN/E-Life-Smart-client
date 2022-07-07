@@ -6,11 +6,7 @@ import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
 //引入element-ui组件
-<<<<<<< HEAD
-import { Avatar, Badge, Button, Image, Dialog, DatePicker, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select} from 'element-ui'
-=======
-import { Avatar, Badge, Button, Image, Dialog, Tabs, TabPane} from 'element-ui'
->>>>>>> f3e0a05eee43cf2d801c6eb5b38a2f0a2783a4f4
+import { Avatar, Badge, Button, Image, Dialog, DatePicker, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select, Tabs, TabPane} from 'element-ui'
 
 //引入路由
 import router from '@/router'
@@ -26,7 +22,6 @@ Vue.use(Badge);
 Vue.use(Button);
 Vue.use(Image);
 Vue.use(Dialog);
-<<<<<<< HEAD
 Vue.use(DatePicker);
 Vue.use(Form);
 Vue.use(Input);
@@ -36,7 +31,6 @@ Vue.use(CheckboxGroup);
 Vue.use(Option);
 Vue.use(Col);
 Vue.use(Select);
-=======
 Vue.use(Tabs);
 Vue.use(TabPane);
 
@@ -62,7 +56,6 @@ Date.prototype.format = function(fmt) {
   }
   return fmt; 
 }
->>>>>>> f3e0a05eee43cf2d801c6eb5b38a2f0a2783a4f4
 
 new Vue({
   render: h => h(App),

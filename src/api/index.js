@@ -18,7 +18,6 @@ export const reqLoginByAccount = (userName, password) => {
 
 //获取已登录的账号
 export const reqLoginAccount = (token) => {
-  console.log(token)
   return requests({
     url: '/user/get_login_user',
     method: 'get',
@@ -59,7 +58,6 @@ export const reqRegister = (userName, password) => {
 
 //下线
 export const reqSignOut = (token) => {
-  //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/logout',
     method: 'post',
@@ -90,10 +88,14 @@ export const reqCheckPhone = (phoneNumber) => {
 }
 
 //为当前帐号绑定手机号
-export const reqBindPhone = (phoneNumber) => {
+export const reqBindPhone = (phoneNumber, token) => {
   return requests({
     url: `/user/bind_phone/${phoneNumber}`,
     method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
   })
 }
 
@@ -108,28 +110,33 @@ export const reqLoginByPhone = (phoneNumber) => {
   })
 }
 
+//修改密码
+export const reqModifyPassword = (oldPwd, newPwd, token) => {
+  return requests({
+    url: '/user/password',
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    params: {
+      oldPwd,
+      newPwd
+    }
+  })
+}
+
 //更新账号信息
-export const reqUpdateAccount = (account) => {
+export const reqUpdateAccount = (user, token) => {
   //发请求：axios发请求返回Promise对象
   return requests({
-    url: '/user/update_account',
+    url: '/user/user_info',
     method: 'post',
-    params: {
-      firstName: account.firstName,
-      lastName: account.lastName,
-      email: account.email,
-      phone: account.phone,
-      address1: account.address1,
-      address2: account.address2,
-      city: account.city,
-      state: account.state,
-      zip: account.zip,
-      country: account.country,
-      languagePreference: account.languagePreference,
-      favouriteCategoryId: account.favouriteCategoryId,
-      listOption: account.listOption,
-      bannerOption: account.bannerOption
-    }
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    data: user
   })
 }
 

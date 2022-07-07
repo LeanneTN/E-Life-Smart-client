@@ -93,7 +93,14 @@ export default {
             freeTime: "",
             totalTime: 0,
             id: 0,
-            tableData:[]
+            uid: 0,
+            tableData:[],
+            volunteerObj :{
+              name: "",
+              freeTime: "",
+              totalTime,
+              id
+            }
         };
     },
     mounted: async function () {
@@ -104,9 +111,19 @@ export default {
         this.freeTime = res.data.freeTime;
         this.id = res.data.id;
         this.totalTime = res.data.totalTime;
+        this.uid = res.data.uid;
+        let vo={
+          "name":this.name,
+          "id":this.id,
+          "freeTime":this.freeTime,
+          "totalTime":this.totalTime,
+          "uid": this.uid
+        }
+        //console.log(vo)
         if(res.code===200){
-          let ress = await volunteerMissionGet(this.token, this.uid, this.name, this.freeTime, this.totalTime)
-          tableData = ress.data
+          let ress = await volunteerMissionGet(this.token, vo, this.name, this.id, this.freeTime, this.totalTime, this.uid)
+          //console.log(ress)
+          //tableData = ress.data
         }
     },
     methods: {

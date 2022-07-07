@@ -8,7 +8,7 @@ import 'buefy/dist/buefy.css'
 //梁田的引入
 import { DatePicker, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select} from 'element-ui'
 //我的引入
-import { Avatar, Badge, Button, Image, Dialog, Tabs, TabPane} from 'element-ui'
+import { Avatar, Badge, Button, Image, Dialog, Tabs, TabPane, Upload} from 'element-ui'
 
 const UIComponents = {
   init: function(){
@@ -21,6 +21,7 @@ const UIComponents = {
     Vue.use(Dialog);
     Vue.use(Tabs);
     Vue.use(TabPane);
+    Vue.use(Upload);
     
     Vue.use(DatePicker);
     Vue.use(Form);

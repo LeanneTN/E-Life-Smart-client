@@ -3,8 +3,6 @@ import App from './App.vue'
 
 import UIComponents from '@/utils/UIComponents'
 
-
-
 //引入路由
 import router from '@/router'
 //引入仓库

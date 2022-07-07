@@ -1,7 +1,10 @@
 <template>
-    <div>
+    <div id="health">
         <!-- 这是健康打卡界面 -->
-        <el-form ref="form" label-width="80px">
+        <el-form ref="form" :label-position="labelPosition">
+            <el-form-item label="您的uid">
+                <el-input v-model="uid"></el-input>
+            </el-form-item>
             <el-form-item label="所在位置">
                 <el-input v-model="location"></el-input>
             </el-form-item>
@@ -22,13 +25,8 @@
                     ></el-date-picker>
                 </el-col>
             </el-form-item>
-            <el-form-item label="今日体温范围">
-                <el-checkbox-group v-model="temp">
-                    <el-checkbox label="35℃以下" name="temp"></el-checkbox>
-                    <el-checkbox label="35.1~36.8℃" name="temp"></el-checkbox>
-                    <el-checkbox label="36.9~37.2℃" name="temp"></el-checkbox>
-                    <el-checkbox label="37.3℃及以上" name="temp"></el-checkbox>
-                </el-checkbox-group>
+            <el-form-item label="当前体温">
+                <el-input v-model="temp"></el-input>
             </el-form-item>
             <el-form-item label="其他信息">
                 <el-input type="textarea" v-model="other_info"></el-input>
@@ -52,7 +50,8 @@ export default {
             location:"",
             time:"",
             other_info:"",
-            area_level:""
+            area_level:"",
+            labelPosition:"top"
         };
     },
     methods:{
@@ -71,4 +70,11 @@ export default {
 </script>
 
 <style scoped lang='less'>
+#health{
+  margin: 20px;
+}
+
+.el-form-item{
+  width: 500px;
+}
 </style>

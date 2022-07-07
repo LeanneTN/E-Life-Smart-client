@@ -15,6 +15,14 @@ let _util = {
             return true;
         }
     },
+    //深度拷贝
+    copy(obj){
+        var objCopy = {};
+        for(var key in obj){
+            objCopy[key] = obj[key];
+        }
+        return objCopy;
+    }
 };
 
 //对外暴露

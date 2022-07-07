@@ -18,7 +18,6 @@ export const reqLoginByAccount = (userName, password) => {
 
 //获取已登录的账号
 export const reqLoginAccount = (token) => {
-  console.log(token)
   return requests({
     url: '/user/get_login_user',
     method: 'get',
@@ -59,7 +58,6 @@ export const reqRegister = (userName, password) => {
 
 //下线
 export const reqSignOut = (token) => {
-  //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/logout',
     method: 'post',
@@ -90,10 +88,14 @@ export const reqCheckPhone = (phoneNumber) => {
 }
 
 //为当前帐号绑定手机号
-export const reqBindPhone = (phoneNumber) => {
+export const reqBindPhone = (phoneNumber, token) => {
   return requests({
     url: `/user/bind_phone/${phoneNumber}`,
     method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
   })
 }
 
@@ -108,139 +110,74 @@ export const reqLoginByPhone = (phoneNumber) => {
   })
 }
 
+//修改密码
+export const reqModifyPassword = (oldPwd, newPwd, token) => {
+  return requests({
+    url: '/user/password',
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    params: {
+      oldPwd,
+      newPwd
+    }
+  })
+}
+
 //更新账号信息
-export const reqUpdateAccount = (account) => {
+export const reqUpdateAccount = (user, token) => {
   //发请求：axios发请求返回Promise对象
   return requests({
-    url: '/user/update_account',
+    url: '/user/user_info',
     method: 'post',
-    params: {
-      firstName: account.firstName,
-      lastName: account.lastName,
-      email: account.email,
-      phone: account.phone,
-      address1: account.address1,
-      address2: account.address2,
-      city: account.city,
-      state: account.state,
-      zip: account.zip,
-      country: account.country,
-      languagePreference: account.languagePreference,
-      favouriteCategoryId: account.favouriteCategoryId,
-      listOption: account.listOption,
-      bannerOption: account.bannerOption
-    }
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    data: user
   })
 }
 
-//获取categoryList
-export const reqCategoryList = () => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/catalog/all_category',
-    method: 'get',
-  })
-}
 
-//根据categoryId获取productList
-export const reqProductListById = (categoryId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: `/catalog/categories/${categoryId}/products`,
-    method: 'get',
-  })
-}
 
-//根据productId获取itemList
-export const reqItemListById = (productId) => {
-  //发请求：axios发请求返回Promise对象
+//以下为报修相关
+//提交报修单
+export const reqSubmitRepair = (repair, token) => {
   return requests({
-    url: `/catalog/products/${productId}`,
-    method: 'get',
-    params: {
-      productId,
-    }
-  })
-}
-
-//根据itemId获取item
-export const reqItem = (itemId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: `/catalog/items/${itemId}`,
-    method: 'get',
-  })
-}
-
-//以下为购物车相关的部分
-//获取已登录账号的cart
-export const reqCart = () => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/cart/myCart',
-    method: 'get',
-  })
-}
-
-//向购物车添加商品
-export const reqAddItem = (itemId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/cart/myCart',
+    url: '/repair/submit',
     method: 'post',
-    params: {
-      itemId,
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    data: repair
+  })
+}
+//查看个人的所有报修记录
+export const reqGetMyLogs = (token) => {
+  return requests({
+    url: '/repair/my_logs',
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+      token
     },
   })
 }
-
-//更改cartItem的checked
-export const reqChangeChecked = (itemId, checked) => {
-  //发请求：axios发请求返回Promise对象
+//修改某个报修的信息
+export const reqUpdateRepair = (repair, token) => {
   return requests({
-    url: '/cart/myCart/changeChecked',
-    method: 'post',
-    params: {
-      itemId,
-      checked
+    url: '/repair/my_logs',
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json',
+      token
     },
+    data: repair
   })
 }
-
-//更新购物车商品数量
-export const reqUpdateItemQuantity = (itemId, quantity) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/cart/myCart/cartItems',
-    method: 'post',
-    params: {
-      itemId,
-      quantity
-    },
-  })
-}
-
-//删除购物车中的某件商品
-export const reqRemoveItem = (itemId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/cart/myCart/cartItems',
-    method: 'delete',
-    params: {
-      itemId,
-    },
-  })
-}
-
-//结算并返回被选中的商品
-export const reqCheckOut = () => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: '/cart/myCart/checkout',
-    method: 'post',
-  })
-}
-
 
 //以下为与订单相关的部分
 //获取已登录账号的orderList

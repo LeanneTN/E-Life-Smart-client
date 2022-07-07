@@ -4,7 +4,7 @@ import externalAPI from "./external";
 
 //以下为与账号相关的部分
 //使用账号密码进行登录
-export const reqLoginByAccount = (userName,password)=>{
+export const reqLoginByAccount = (userName, password) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/login_by_account',
@@ -17,7 +17,7 @@ export const reqLoginByAccount = (userName,password)=>{
 }
 
 //获取已登录的账号
-export const reqLoginAccount = (token)=>{
+export const reqLoginAccount = (token) => {
   console.log(token)
   return requests({
     url: '/user/get_login_user',
@@ -30,7 +30,7 @@ export const reqLoginAccount = (token)=>{
 }
 
 //获取图片验证码
-export const reqCaptcha = ()=>{
+export const reqCaptcha = () => {
   return requests({
     url: '/user/captcha',
     method: 'get',
@@ -38,7 +38,7 @@ export const reqCaptcha = ()=>{
 }
 
 //判断用户名是否被占用
-export const reqUserName = (userName)=>{
+export const reqUserName = (userName) => {
   return requests({
     url: `/user/username/${userName}`,
     method: 'get'
@@ -46,7 +46,7 @@ export const reqUserName = (userName)=>{
 }
 
 //注册
-export const reqRegister = (userName,password)=>{
+export const reqRegister = (userName, password) => {
   return requests({
     url: '/user/register',
     method: 'post',
@@ -58,7 +58,7 @@ export const reqRegister = (userName,password)=>{
 }
 
 //下线
-export const reqSignOut = (token)=>{
+export const reqSignOut = (token) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/logout',
@@ -71,7 +71,7 @@ export const reqSignOut = (token)=>{
 }
 
 //获取手机验证码
-export const reqPhoneCode = (phoneNumber)=>{
+export const reqPhoneCode = (phoneNumber) => {
   return requests({
     url: '/user/phone_code',
     method: 'post',
@@ -82,7 +82,7 @@ export const reqPhoneCode = (phoneNumber)=>{
 }
 
 //检查手机号是否存在
-export const reqCheckPhone = (phoneNumber)=>{
+export const reqCheckPhone = (phoneNumber) => {
   return requests({
     url: `/user/check_phone/${phoneNumber}`,
     method: 'get',
@@ -90,7 +90,7 @@ export const reqCheckPhone = (phoneNumber)=>{
 }
 
 //为当前帐号绑定手机号
-export const reqBindPhone = (phoneNumber)=>{
+export const reqBindPhone = (phoneNumber) => {
   return requests({
     url: `/user/bind_phone/${phoneNumber}`,
     method: 'post',
@@ -98,7 +98,7 @@ export const reqBindPhone = (phoneNumber)=>{
 }
 
 //使用手机号进行登录
-export const reqLoginByPhone = (phoneNumber)=>{
+export const reqLoginByPhone = (phoneNumber) => {
   return requests({
     url: '/user/login_by_phone',
     method: 'post',
@@ -109,7 +109,7 @@ export const reqLoginByPhone = (phoneNumber)=>{
 }
 
 //更新账号信息
-export const reqUpdateAccount = (account)=>{
+export const reqUpdateAccount = (account) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/user/update_account',
@@ -134,7 +134,7 @@ export const reqUpdateAccount = (account)=>{
 }
 
 //获取categoryList
-export const reqCategoryList = ()=>{
+export const reqCategoryList = () => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/catalog/all_category',
@@ -143,7 +143,7 @@ export const reqCategoryList = ()=>{
 }
 
 //根据categoryId获取productList
-export const reqProductListById = (categoryId)=>{
+export const reqProductListById = (categoryId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/catalog/categories/${categoryId}/products`,
@@ -152,7 +152,7 @@ export const reqProductListById = (categoryId)=>{
 }
 
 //根据productId获取itemList
-export const reqItemListById = (productId)=>{
+export const reqItemListById = (productId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/catalog/products/${productId}`,
@@ -164,7 +164,7 @@ export const reqItemListById = (productId)=>{
 }
 
 //根据itemId获取item
-export const reqItem = (itemId)=>{
+export const reqItem = (itemId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/catalog/items/${itemId}`,
@@ -174,7 +174,7 @@ export const reqItem = (itemId)=>{
 
 //以下为购物车相关的部分
 //获取已登录账号的cart
-export const reqCart = ()=>{
+export const reqCart = () => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart',
@@ -183,7 +183,7 @@ export const reqCart = ()=>{
 }
 
 //向购物车添加商品
-export const reqAddItem = (itemId)=>{
+export const reqAddItem = (itemId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart',
@@ -195,7 +195,7 @@ export const reqAddItem = (itemId)=>{
 }
 
 //更改cartItem的checked
-export const reqChangeChecked = (itemId, checked)=>{
+export const reqChangeChecked = (itemId, checked) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart/changeChecked',
@@ -208,7 +208,7 @@ export const reqChangeChecked = (itemId, checked)=>{
 }
 
 //更新购物车商品数量
-export const reqUpdateItemQuantity = (itemId, quantity)=>{
+export const reqUpdateItemQuantity = (itemId, quantity) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart/cartItems',
@@ -221,7 +221,7 @@ export const reqUpdateItemQuantity = (itemId, quantity)=>{
 }
 
 //删除购物车中的某件商品
-export const reqRemoveItem = (itemId)=>{
+export const reqRemoveItem = (itemId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart/cartItems',
@@ -233,7 +233,7 @@ export const reqRemoveItem = (itemId)=>{
 }
 
 //结算并返回被选中的商品
-export const reqCheckOut = ()=>{
+export const reqCheckOut = () => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: '/cart/myCart/checkout',
@@ -244,7 +244,7 @@ export const reqCheckOut = ()=>{
 
 //以下为与订单相关的部分
 //获取已登录账号的orderList
-export const reqOrderList = ()=>{
+export const reqOrderList = () => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/order/orders/myOrders`,
@@ -253,7 +253,7 @@ export const reqOrderList = ()=>{
 }
 
 //生成订单并清空购物车中被选中的商品
-export const reqNewOrder = (expiryDate,billToFirstName,creditCard, billToLastName,billAddress1,billAddress2,billCity,billState,billZip,billCountry,cardType,shippingAddressRequired,shipToFirstName,shipToLastName,shipAddress1,shipAddress2,shipCity,shipState,shipZip,shipCountry)=>{
+export const reqNewOrder = (expiryDate, billToFirstName, creditCard, billToLastName, billAddress1, billAddress2, billCity, billState, billZip, billCountry, cardType, shippingAddressRequired, shipToFirstName, shipToLastName, shipAddress1, shipAddress2, shipCity, shipState, shipZip, shipCountry) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/order/orders/newOrder`,
@@ -284,7 +284,7 @@ export const reqNewOrder = (expiryDate,billToFirstName,creditCard, billToLastNam
 }
 
 //根据orderId获取order
-export const reqOrderById = (orderId)=>{
+export const reqOrderById = (orderId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/order/orders/${orderId}`,
@@ -293,7 +293,7 @@ export const reqOrderById = (orderId)=>{
 }
 
 //根据订单号获取该订单购买的商品
-export const reqOrderItemList = (orderId)=>{
+export const reqOrderItemList = (orderId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/order/orders/${orderId}/items`,
@@ -303,7 +303,7 @@ export const reqOrderItemList = (orderId)=>{
 
 // 以下是跟聊天室有关的
 //根据关键词搜索用户
-export const reqFindUsers = (keyword)=>{
+export const reqFindUsers = (keyword) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/find_users`,
@@ -315,7 +315,7 @@ export const reqFindUsers = (keyword)=>{
 }
 
 //根据关键词搜索群组
-export const reqFindGroups = (keyword)=>{
+export const reqFindGroups = (keyword) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/find_groups`,
@@ -327,7 +327,7 @@ export const reqFindGroups = (keyword)=>{
 }
 
 //添加一位好友
-export const reqAddFriend = (friendName)=>{
+export const reqAddFriend = (friendName) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/add_friend`,
@@ -339,7 +339,7 @@ export const reqAddFriend = (friendName)=>{
 }
 
 //进入一个群组
-export const reqEnterGroup = (groupId)=>{
+export const reqEnterGroup = (groupId) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/enter_group`,
@@ -351,7 +351,7 @@ export const reqEnterGroup = (groupId)=>{
 }
 
 //创建一个群
-export const reqCreateGroup = (groupId, groupName)=>{
+export const reqCreateGroup = (groupId, groupName) => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/create_group`,
@@ -364,7 +364,7 @@ export const reqCreateGroup = (groupId, groupName)=>{
 }
 
 //获取自己的好友和群列表
-export const reqFriendsAndGroups = ()=>{
+export const reqFriendsAndGroups = () => {
   //发请求：axios发请求返回Promise对象
   return requests({
     url: `/chat/get_friends_and_groups`,
@@ -384,23 +384,46 @@ export const getHistoryMessages = () => {
 }
 
 //添加历史消息
-export const addHistoryMessage = 
-(messageId,status,type,sendTime,content,toContactId,userId,displayName,avatar) => {
-  //发请求：axios发请求返回Promise对象
+export const addHistoryMessage =
+  (messageId, status, type, sendTime, content, toContactId, userId, displayName, avatar) => {
+    //发请求：axios发请求返回Promise对象
+    return requests({
+      url: `/chat/add_history_message`,
+      method: 'post',
+      params: {
+        messageId,
+        status,
+        type,
+        sendTime,
+        content,
+        toContactId,
+        userId,
+        displayName,
+        avatar
+      }
+    })
+
+  }
+
+//以下为健康打卡部分
+//健康打卡的消息传递
+export const healthCheckSubmit = (uid, temp,
+  location, time,
+  other_info, area_level, token) => {
   return requests({
-    url: `/chat/add_history_message`,
+    url: '/health/submit',
     method: 'post',
-    params:{
-      messageId,
-      status,
-      type,
-      sendTime,
-      content,
-      toContactId,
-      userId,
-      displayName,
-      avatar
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    data: {
+      uid,
+      temp,
+      location,
+      time,
+      other_info,
+      area_level
     }
   })
-
 }

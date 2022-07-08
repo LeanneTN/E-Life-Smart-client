@@ -396,20 +396,27 @@ export const volunteerApply = (uid, name, free_time, token) =>{
 }
 
 //接收志愿服务任务
-export const volunteerMissionGet = (token, volunteer, name, id, freeTime, totalTime, uid) =>{
+export const volunteerMissionGet = (token, volunteer, name, id, free_time, total_time, uid) => {
   console.log(volunteer)
+  console.log(uid)
+  console.log(name)
+  console.log(free_time)
+  console.log(total_time)
+  console.log(id)
   return requests({
     url: '/volunteer/get_volunteer_tasks',
     method: 'get',
-    headers:{
+    headers: {
       'Content-Type': 'application/json',
       token
     },
-    data:{
+    data: {
+      uid,
       name,
-      id,
-      freeTime,
-      uid
+      free_time,
+      total_time,
+      id
     }
   })
 }
+

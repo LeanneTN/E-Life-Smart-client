@@ -113,15 +113,15 @@ export default {
         this.totalTime = res.data.totalTime;
         this.uid = res.data.uid;
         let vo={
-          "name":this.name,
-          "id":this.id,
-          "freeTime":this.freeTime,
-          "totalTime":this.totalTime,
-          "uid": this.uid
+          "name":res.data.name,
+          "id":res.data.id,
+          "freeTime":res.data.freeTime,
+          "totalTime":res.data.totalTime,
+          "uid": res.data.uid
         }
         //console.log(vo)
         if(res.code===200){
-          let ress = await volunteerMissionGet(this.token, vo, this.name, this.id, this.freeTime, this.totalTime, this.uid)
+          let ress = await volunteerMissionGet(this.token, res.data, res.data.name, res.data.id, res.data.freeTime, res.data.totalTime, res.data.uid)
           //console.log(ress)
           //tableData = ress.data
         }

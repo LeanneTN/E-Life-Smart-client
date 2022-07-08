@@ -56,7 +56,7 @@
                         </el-table-column>
                     </el-table>
                 </el-main> -->
-                {{tableData}}
+                {{ tableData }}
             </el-container>
         </div>
         <div v-if="volunteer.code === 442" class="border">
@@ -94,36 +94,45 @@ export default {
             totalTime: 0,
             id: 0,
             uid: 0,
-            tableData:[],
-            volunteerObj :{
-              name: "",
-              freeTime: "",
-              totalTime,
-              id
-            }
+            tableData: [],
+            volunteerObj: {
+                name: "",
+                freeTime: "",
+                totalTime:0,
+                id:0,
+            },
         };
     },
     mounted: async function () {
         let res = await volunteerGetter(this.token);
         console.log(res);
         this.volunteer = res;
-        this.name = res.data.name;
-        this.freeTime = res.data.freeTime;
-        this.id = res.data.id;
-        this.totalTime = res.data.totalTime;
-        this.uid = res.data.uid;
-        let vo={
-          "name":res.data.name,
-          "id":res.data.id,
-          "freeTime":res.data.freeTime,
-          "totalTime":res.data.totalTime,
-          "uid": res.data.uid
-        }
-        //console.log(vo)
-        if(res.code===200){
-          let ress = await volunteerMissionGet(this.token, res.data, res.data.name, res.data.id, res.data.freeTime, res.data.totalTime, res.data.uid)
-          //console.log(ress)
-          //tableData = ress.data
+        if (res === 200) {
+            this.name = res.data.name;
+            this.freeTime = res.data.freeTime;
+            this.id = res.data.id;
+            this.totalTime = res.data.totalTime;
+            this.uid = res.data.uid;
+            let vo = {
+                name: res.data.name,
+                id: res.data.id,
+                freeTime: res.data.freeTime,
+                totalTime: res.data.totalTime,
+                uid: res.data.uid,
+            };
+            //console.log(vo)
+            //if(res.code===200){
+            let ress = await volunteerMissionGet(
+                this.token,
+                res.data,
+                res.data.name,
+                res.data.id,
+                res.data.freeTime,
+                res.data.totalTime,
+                res.data.uid
+            );
+            //console.log(ress)
+            //tableData = ress.data
         }
     },
     methods: {

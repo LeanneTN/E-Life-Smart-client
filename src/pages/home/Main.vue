@@ -5,7 +5,7 @@
         <div class="avatar" @click="goPage('accountInfo')"> 
           <el-avatar :size="80" :src="circleUrl"></el-avatar>
         </div>
-        <h6>{{loginAccount.userName}}</h6>
+        <h6>{{loginAccount ? loginAccount.userName : '***'}}</h6>
         <div>
           <router-link class="link" :to="{name: 'accountInfo'}">
             个人中心
@@ -29,9 +29,15 @@
         </b-carousel>
       </section>
       
+      <hr class="dropdown-divider" aria-role="menuitem">
+
       <div class="recommend">
         推荐话题：
-        <el-button class="refresh" size="small" icon="el-icon-refresh-right">再来一组</el-button>
+        <el-button 
+        @click="getRecommend"
+        class="refresh" 
+        size="small" 
+        icon="el-icon-refresh-right">换一组</el-button>
       </div>
 
       <TopicCard v-for="topic,index in recommendTopics" :key="index" :topicData="topic"/>
@@ -39,7 +45,7 @@
     </div>
     <div class="column3">
       <Autocomplete/>
-      <Hot :topicList="listTopics.slice(0,5)"/>
+      <Hot :topicList="topicList.slice(0,5)"/>
     </div>
   </div>
 </template>
@@ -60,18 +66,17 @@ export default {
     QuickLink,
   },
   async mounted() {
+    //获取所有的新闻信息
     await this.$store.dispatch('allTopics', this.token);
+    this.$store.dispatch('topicList');
     this.randomScramble();
     this.getRecommend();
-    this.getList();
   },
   data () {
     return {
       allTopicsCopy: [],
       recommendTopics: [],
       currentIndex: 0,
-      listTopics: [],
-      hotTopics: [],
 
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
@@ -98,6 +103,7 @@ export default {
       loginAccount: state=>state.account.loginAccount,
       token: state=>state.account.token,
       allTopics: state=>state.forum.allTopics,
+      topicList: state=>state.forum.topicList,
     })
   },
   methods: {
@@ -143,15 +149,6 @@ export default {
         count++;
       }
     },
-
-    //根据回复数来获取榜单
-    getList(){
-      let temp = [];
-      for(let topic of this.allTopicsCopy)
-        temp.push(_util.copy(topic))
-      this.listTopics = this.allTopicsCopy.sort((a,b)=>{ return b.response-a.response})//降序
-      this.allTopicsCopy = temp;
-    },
   },
 }
 </script>
@@ -186,7 +183,6 @@ export default {
         border-radius: 8px;
       }
       .recommend{
-        padding-top: 5px;
         padding-bottom: 8px;
         .refresh{
           float: right;

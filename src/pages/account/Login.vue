@@ -113,7 +113,6 @@
       //刷新验证码
       async getCaptcha(){
         let res = await reqCaptcha();
-        console.log(res);
         this.captcha = 'data:image/jpg;base64,' + res.data.codeStr;
         this.imgCode = res.data.code;
       },

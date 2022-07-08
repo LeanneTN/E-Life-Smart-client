@@ -12,7 +12,7 @@
       <div class="column inner-box-info">
         <div class="title-content">
           <h6 class="title">{{topicData.title}}</h6>
-          <h6 class="content">{{topicData.content}}</h6>
+          <h6 class="content">{{topicData.content.slice(0,50)}}...</h6>
         </div>
         <div class="icons columns">
           
@@ -66,6 +66,7 @@ export default {
     .inner-box-info {
       padding: 1%;
       padding-top: 2%;
+      margin-right: 2%;
       .title-content{
         height: 90px;
         .title {

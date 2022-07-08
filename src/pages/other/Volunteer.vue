@@ -107,7 +107,7 @@ export default {
         let res = await volunteerGetter(this.token);
         console.log(res);
         this.volunteer = res;
-        if (res === 200) {
+        if (res.code === 200) {
             this.name = res.data.name;
             this.freeTime = res.data.freeTime;
             this.id = res.data.id;

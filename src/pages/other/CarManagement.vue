@@ -107,6 +107,11 @@ export default {
             this.tableData = temp.data;
             this.car = res.data;
         }
+        let temps = await getParkRecord(this.token, this.car);
+        this.tableData = temps.data;
+        for(const element of temps.data){
+          this.totalMoney += element.totalPrice
+        }
     },
     computed: {
         ...mapState({
@@ -120,6 +125,11 @@ export default {
             alert("停车成功")
             let temp = await getParkRecord(this.token, this.car);
             this.tableData = temp.data;
+            this.totalMoney = 0;
+            for(const element of temp.data){
+              this.totalMoney += element.totalPrice
+            }
+            console.log(this.totalMoney)
           }else if(res.code === 486){
             alert("车已在库中")
           }else{
@@ -134,6 +144,11 @@ export default {
             console.log(this.car)
             let temp = await getParkRecord(this.token, this.car);
             this.tableData = temp.data;
+            this.totalMoney = 0;
+            for(const element of temp.data){
+              this.totalMoney += element.totalPrice
+            }
+            console.log(this.totalMoney)
           }
           else if(res.code === 487){
             alert("无停车记录")

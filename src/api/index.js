@@ -363,7 +363,7 @@ export const volunteerApply = (uid, name, free_time, token) =>{
 }
 
 //接收志愿服务任务
-export const volunteerMissionGet = (volunteer, token) => {
+export const volunteerMissionGet = (token, volunteer, name, id, free_time, total_time, uid) => {
   return requests({
     url: '/volunteer/get_volunteer_tasks',
     method: 'post',
@@ -372,5 +372,30 @@ export const volunteerMissionGet = (volunteer, token) => {
       token
     },
     data: volunteer
+  })
+}
+
+//接受志愿服务（按照id将所接任务传给后端）
+export const volunteerTaskTake = (token, volunteerLog) => {
+  return requests({
+    url: 'volunteer/take_volunteer',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    data:volunteerLog
+  })
+}
+
+//以下是车辆管理模块
+//获取车辆
+export const getCar = (token) =>{
+  return requests({
+    url: '/parking/own',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    }
   })
 }

@@ -23,7 +23,7 @@
                         </tr>
                     </table>
                 </el-aside>
-                <!-- <el-main>
+                <el-main>
                     <el-table
                         :data="tableData"
                         style="width: 100%"
@@ -55,7 +55,7 @@
                         <el-table-column prop="zip" label="邮编" width="120">
                         </el-table-column>
                     </el-table>
-                </el-main> -->
+                </el-main>
                 {{tableData}}
             </el-container>
         </div>

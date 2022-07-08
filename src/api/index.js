@@ -414,3 +414,33 @@ export const getParkRecord = (token, car) => {
   })
 }
 
+//停车
+export const park = (token, id) => {
+  return requests({
+    url: '/parking/park',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    params:{
+      id
+    }
+  })
+}
+
+//离开
+export const leave = (token, id) => {
+  return requests({
+    url: '/parking/leave',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    params:{
+      id
+    }
+  })
+}
+

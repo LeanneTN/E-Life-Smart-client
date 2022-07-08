@@ -22,12 +22,12 @@
                         </tr>
                         <tr>
                             <td align="center">
-                                <el-button type="primary" @click="park"
+                                <el-button type="primary" @click="parkInvoker"
                                     >停车</el-button
                                 >
                             </td>
                             <td align="center">
-                                <el-button type="primary" @click="leave"
+                                <el-button type="primary" @click="leaveInvoker"
                                     >离开</el-button
                                 >
                             </td>
@@ -81,7 +81,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getCar, getParkRecord } from "@/api";
+import { getCar, getParkRecord, park, leave } from "@/api";
 export default {
     name: "CarManagement",
     data() {
@@ -94,6 +94,7 @@ export default {
             start: 0,
             end: 0,
             tableData: [],
+            car: {}
         };
     },
     mounted: async function () {
@@ -104,6 +105,7 @@ export default {
         if (temp.code === 487) alert("您当前没有停车记录");
         else if (temp.code === 200) {
             this.tableData = temp.data;
+            this.car = res.data;
         }
     },
     computed: {
@@ -112,12 +114,32 @@ export default {
         }),
     },
     methods: {
-        park() {
-
+        async parkInvoker() {
+          let res = await park(this.token, this.carNum)
+          if(res.code === 200){
+            alert("停车成功")
+            let temp = await getParkRecord(this.token, this.car);
+            this.tableData = temp.data;
+          }else if(res.code === 486){
+            alert("车已在库中")
+          }else{
+            alert("服务器忙，稍后再试")
+          }
         },
 
-        leave() {
-
+        async leaveInvoker() {
+          let res = await leave(this.token, this.carNum)
+          if(res.code === 200){
+            alert("成功离开")
+            console.log(this.car)
+            let temp = await getParkRecord(this.token, this.car);
+            this.tableData = temp.data;
+          }
+          else if(res.code === 487){
+            alert("无停车记录")
+          }else{
+            alert("服务器忙，稍后再试")
+          }
         },
     },
 };

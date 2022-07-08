@@ -426,6 +426,7 @@ export const volunteerTaskTake = (token, volunteerLog) => {
 export const getCar = (token) =>{
   return requests({
     url: '/parking/own',
+    method: 'post',
     headers:{
       'Content-Type': 'application/json',
       token

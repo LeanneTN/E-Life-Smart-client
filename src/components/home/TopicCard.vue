@@ -15,9 +15,18 @@
           <h6 class="content">{{topicData.content}}</h6>
         </div>
         <div class="icons columns">
-            <div class="column">{{new Date(topicData.lastReplyTime).format("yyyy-MM-dd")}}</div>
-            <div class="column">{{topicData.lastReplyUser.userName}}</div>
-            <div class="column">{{topicData.response}}</div>
+          
+            <div class="column">
+              <i class="el-icon-date"></i>
+              {{new Date(topicData.lastReplyTime).format("yyyy-MM-dd")}}
+            </div>
+            <div class="column">
+              <i class="el-icon-user"></i>
+              {{topicData.lastReplyUser}}</div>
+            <div class="column">
+              <i class="el-icon-s-comment"></i>
+              {{topicData.response}}
+            </div>
         </div>
       </div>
     </div>
@@ -49,6 +58,10 @@ export default {
       padding: 1%;
       padding-bottom: 0%;
       padding-left: 3%;
+      max-width: 224px;
+      .topic-img{
+        cursor: pointer;
+      }
     }
     .inner-box-info {
       padding: 1%;

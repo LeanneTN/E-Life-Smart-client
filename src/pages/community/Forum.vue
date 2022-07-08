@@ -30,7 +30,7 @@
         </span>
       </el-dialog>
 
-      <TopicCard :topicData="topicData"/>
+
       <TopicCard v-for="topic in topicList" :key="topic.id" :topicData="topic"/>
 
 

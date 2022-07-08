@@ -29,12 +29,17 @@
         </b-carousel>
       </section>
       
-      <TopicCard :topicData="topicData"/>
+      <div class="recommend">
+        推荐话题：
+        <el-button class="refresh" size="small" icon="el-icon-refresh-right">再来一组</el-button>
+      </div>
+
+      <TopicCard v-for="topic,index in recommendTopics" :key="index" :topicData="topic"/>
       
     </div>
     <div class="column3">
       <Autocomplete/>
-      <Hot/>
+      <Hot :topicList="listTopics.slice(0,5)"/>
     </div>
   </div>
 </template>
@@ -45,6 +50,7 @@ import Autocomplete from '@/components/home/Autocomplete.vue'
 import TopicCard from '@/components/home/TopicCard.vue'
 import Hot from '@/components/home/Hot.vue'
 import QuickLink from '@/components/home/QuickLink.vue'
+import _util from "@/utils/util";
 export default {
   name:'Main',
   components: {
@@ -53,8 +59,20 @@ export default {
     Hot,
     QuickLink,
   },
+  async mounted() {
+    await this.$store.dispatch('allTopics', this.token);
+    this.randomScramble();
+    this.getRecommend();
+    this.getList();
+  },
   data () {
     return {
+      allTopicsCopy: [],
+      recommendTopics: [],
+      currentIndex: 0,
+      listTopics: [],
+      hotTopics: [],
+
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
       sizeList: ["large", "medium", "small"],
@@ -70,9 +88,7 @@ export default {
         content: '这是内容',
         response: 999,
         lastReplyTime: new Date(),
-        lastReplyUser: {
-          userName: '张三',
-        },
+        lastReplyUser: '张三',
       },
     }
   },
@@ -81,6 +97,7 @@ export default {
       //注入state参数
       loginAccount: state=>state.account.loginAccount,
       token: state=>state.account.token,
+      allTopics: state=>state.forum.allTopics,
     })
   },
   methods: {
@@ -101,7 +118,40 @@ export default {
         //跳往登录界面
         this.$router.push({name:'login'});
       }
-    }
+    },
+
+    //随机打乱allTopics
+    randomScramble(){
+      for(let topic of this.allTopics)
+        this.allTopicsCopy.push(_util.copy(topic))
+      for(let i = 0;i < this.allTopicsCopy.length;i++){
+        let randomIndex = Math.floor(Math.random()*this.allTopicsCopy.length);
+        let temp = this.allTopicsCopy[i];
+        this.allTopicsCopy[i] = this.allTopicsCopy[randomIndex];
+        this.allTopicsCopy[randomIndex] = temp;
+      }
+    },
+
+    //获取5个topic展示到推荐里
+    getRecommend(){
+      this.recommendTopics = [];
+      let count = 0;
+      while(count < 5 && this.allTopicsCopy != 0){
+        this.recommendTopics.push(this.allTopicsCopy[this.currentIndex++]);
+        if(this.currentIndex == this.allTopicsCopy.length)
+          this.currentIndex = 0;
+        count++;
+      }
+    },
+
+    //根据回复数来获取榜单
+    getList(){
+      let temp = [];
+      for(let topic of this.allTopicsCopy)
+        temp.push(_util.copy(topic))
+      this.listTopics = this.allTopicsCopy.sort((a,b)=>{ return b.response-a.response})//降序
+      this.allTopicsCopy = temp;
+    },
   },
 }
 </script>
@@ -134,6 +184,13 @@ export default {
       padding-right: 2%;
       .news{
         border-radius: 8px;
+      }
+      .recommend{
+        padding-top: 5px;
+        padding-bottom: 8px;
+        .refresh{
+          float: right;
+        }
       }
     }
 

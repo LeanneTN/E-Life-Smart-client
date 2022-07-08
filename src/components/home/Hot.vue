@@ -2,9 +2,14 @@
   <div class="hot">
     <h6>热门话题</h6>
     <hr class="dropdown-divider" aria-role="menuitem">
-    <div v-for="topic,i in hotTopics" :key="i">
-      {{i}}{{topic.title}}
-      {{topic.time}}{{topic.views}}{{topic.response}}
+    <div @click="goTopic(topic)" v-for="topic,i in topicList" :key="i" >
+      <div class="columns">
+        <div class="line column is-1">{{i+1}}、</div>
+        <div class="line column is-9">{{topic.title}}</div>
+        <div class="line column is-2">{{topic.response}}</div>
+      </div>
+
+      <hr class="dropdown-divider" aria-role="menuitem">
     </div>
       
   </div>
@@ -13,23 +18,15 @@
 <script>
 export default {
   name:'Hot',
-  mounted() {
-    //获取热门话题
-    this.hotTopics = [
-      {
-        title: '前端测试',
-        time: new Date().format("yyyy-MM-dd"),
-        views: '2.5k',
-        response: 123
-      },
-
-    ]
-  },
-  data() {
-    return {
-      hotTopics: []
+  methods: {
+    goTopic(){
+      //进行路由跳转到话题页面
     }
   },
+  props: {
+    topicList: [],
+  }
+  
 }
 </script>
 
@@ -41,6 +38,13 @@ export default {
     margin-top: 3%;
     h6{
       font-size: 14px;
+    }
+    .line{
+      font-size: 14px;
+      padding-bottom: 0px;
+    }
+    .columns:hover{
+      cursor: pointer;
     }
   }
 </style>

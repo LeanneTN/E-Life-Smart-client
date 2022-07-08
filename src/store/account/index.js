@@ -1,4 +1,4 @@
-import { reqLoginAccount, reqLoginByAccount } from "@/api";
+import { reqLoginAccount } from "@/api";
 
 //home模块的小store
 const state = {

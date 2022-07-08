@@ -1,8 +1,8 @@
 <template>
   <div class="columns forum">
     <div class="column is-two-thirds">
-      <el-button size="small" type="primary">按时间排序</el-button>
-      <el-button size="small" type="primary">按热度排序</el-button>
+      <el-button @click="orderByTime" size="small" type="primary">按时间排序</el-button>
+      <el-button @click="orderByResponse" size="small" type="primary">按热度排序</el-button>
       <el-button @click="dialogVisible=true" size="small" type="primary" icon="el-icon-plus">创建</el-button>
 
       <el-dialog
@@ -30,14 +30,12 @@
         </span>
       </el-dialog>
 
-      <TopicCard :topicData="topicData"/>
-      <TopicCard v-for="topic in topicList" :key="topic.id" :topicData="topic"/>
-
+      <TopicCard v-for="topic in workingTopicList" :key="topic.id" :topicData="topic"/>
 
     </div>
     <div class="column">
       <Autocomplete/>
-      <Hot/>
+      <Hot :topicList="topicList.slice(0,5)"/>
     </div>
   </div>
 </template>
@@ -57,19 +55,20 @@ export default {
     Hot,
   },
   async mounted() {
-    await this.getAllTopics();
+    this.$store.dispatch('topicTime');
+    this.workingTopicList = this.allTopics;
   },
   data () {
     return {
       dialogVisible: false,
+
+      workingTopicList: [],
 
       workingTopic: {
         title: '',
         img: '',
         content: '',
       },
-
-      topicList: [],
 
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
@@ -97,6 +96,9 @@ export default {
       //注入state参数
       loginAccount: state=>state.account.loginAccount,
       token: state=>state.account.token,
+      allTopics: state=>state.forum.allTopics,
+      topicList: state=>state.forum.topicList,
+      topicTime: state=>state.forum.topicTime,
     })
   },
   methods: {
@@ -114,6 +116,7 @@ export default {
           type: 'success'
         });
         this.clearWorkingTopic();
+        this.$store.dispatch('allTopics', this.token);
         this.dialogVisible = false;
       }else
         this.$message.error('创建话题失败！');
@@ -125,12 +128,19 @@ export default {
       this.workingTopic.content = '';
     },
 
-    async getAllTopics(){
-      let res = await reqGetAllTopic(this.token);
-      console.log(res);
-      if(res.code == 200)
-        this.topicList = res.data;
-    }
+    orderByTime(){
+      this.workingTopicList = this.topicTime;
+    },
+    orderByResponse(){
+      this.workingTopicList = this.topicList;
+    },
+
+    // async getAllTopics(){
+    //   let res = await reqGetAllTopic(this.token);
+    //   console.log(res);
+    //   if(res.code == 200)
+    //     this.topicList = res.data;
+    // }
   },
 }
 </script>

@@ -68,17 +68,41 @@
               {'is-danger': props.row.status=='已报修'},
               {'is-warning': props.row.status=='已接单'},
               {'is-success': props.row.status=='已完成'},
+              {'is-light': props.row.status=='已完成'},
               'tag']">
                 {{ props.row.status }}
               </span>
             </b-table-column>
 
             <b-table-column field="last_name" label="操作" v-slot="props">
-              <b-button 
+              <el-button-group>
+                <el-button 
+                size="small" 
+                type="primary" 
+                icon="el-icon-edit"
+                :disabled="props.row.status!='已报修'"
+                @click="changeData(props.row)"></el-button>
+                <el-button 
+                size="small" 
+                type="primary" 
+                icon="el-icon-success"
+                :disabled="props.row.status!='已接单'"
+                @click="changeData(props.row)"
+                ></el-button>
+                <el-button 
+                size="small" 
+                type="primary" 
+                icon="el-icon-error"
+                :disabled="props.row.status!='已报修'"
+                @click="changeData(props.row)"
+                ></el-button>
+              </el-button-group>
+              
+              <!-- <b-button 
               size="is-small" 
               v-show="props.row.status=='已报修'" 
               rounded
-              @click="changeData(props.row)">修改信息</b-button>
+              >修改信息</b-button> -->
 
               <el-dialog
                 title="修改报修信息"
@@ -126,7 +150,6 @@
 </template>
 
 <script>
-
 import { mapState } from 'vuex';
 import { reqSubmitRepair, reqGetMyLogs, reqUpdateRepair } from '@/api/index';
 import _util from "@/utils/util";

@@ -15,15 +15,12 @@
           <h6 class="content">{{topicData.content}}</h6>
         </div>
         <div class="icons columns">
-            <div class="column">{{topicData.lastReplyTime.format("yyyy-MM-dd")}}</div>
+            <div class="column">{{new Date(topicData.lastReplyTime).format("yyyy-MM-dd")}}</div>
             <div class="column">{{topicData.lastReplyUser.userName}}</div>
             <div class="column">{{topicData.response}}</div>
         </div>
       </div>
     </div>
-
-
-
   </div>
 </template>
 

@@ -12,6 +12,7 @@ import Main from '@/pages/home/Main'
 import Login from '@/pages/account/Login';
 import Register from '@/pages/account/Register';
 import AccountInfo from '@/pages/account/AccountInfo';
+import Test from '@/pages/account/Test';
 
 import Forum from '@/pages/community/Forum';
 import Post from '@/pages/community/Post';
@@ -53,6 +54,11 @@ export default new VueRouter({
       path:'/user/accountInf',
       component:AccountInfo,
       name:'accountInfo'
+    },
+    {
+      path:'/test',
+      component:Test,
+      name:'test'
     },
 
     {

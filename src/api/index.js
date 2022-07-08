@@ -429,7 +429,6 @@ export const getCar = (token) =>{
     headers:{
       'Content-Type': 'application/json',
       token
-    },
-    data: volunteer
+    }
   })
 }

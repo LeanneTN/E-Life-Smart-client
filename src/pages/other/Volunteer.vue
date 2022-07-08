@@ -23,40 +23,43 @@
                         </tr>
                     </table>
                 </el-aside>
-                <!-- <el-main>
+                <el-main>
                     <el-table
                         :data="tableData"
                         style="width: 100%"
-                        height="250"
+                        max-height="600"
+                        :header-cell-style="{ 'text-align': 'center' }"
+                        :cell-style="{ 'text-align': 'center' }"
                     >
                         <el-table-column
-                            fixed
-                            prop="date"
-                            label="日期"
+                            prop="id"
+                            label="任务编号"
                             width="150"
                         >
                         </el-table-column>
-                        <el-table-column prop="name" label="姓名" width="120">
-                        </el-table-column>
                         <el-table-column
-                            prop="province"
-                            label="省份"
-                            width="120"
+                            prop="event"
+                            label="任务内容"
+                            width="200"
                         >
                         </el-table-column>
-                        <el-table-column prop="city" label="市区" width="120">
-                        </el-table-column>
                         <el-table-column
-                            prop="address"
-                            label="地址"
-                            width="300"
+                            prop="totalTime"
+                            label="任务时长"
+                            width="150"
                         >
                         </el-table-column>
-                        <el-table-column prop="zip" label="邮编" width="120">
+                        <el-table-column align="right">
+                            <template slot-scope="scope">
+                                <el-button
+                                    size="mini"
+                                    @click="handleEdit(scope.$index, scope.row)"
+                                    >接受</el-button
+                                >
+                            </template>
                         </el-table-column>
                     </el-table>
-                </el-main> -->
-                {{ tableData }}
+                </el-main>
             </el-container>
         </div>
         <div v-if="volunteer.code === 442" class="border">
@@ -83,7 +86,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { volunteerGetter, volunteerApply, volunteerMissionGet } from "@/api";
+import { volunteerGetter, volunteerApply, volunteerMissionGet, volunteerTaskTake } from "@/api";
 export default {
     name: "Volunteer",
     data() {
@@ -98,8 +101,8 @@ export default {
             volunteerObj: {
                 name: "",
                 freeTime: "",
-                totalTime:0,
-                id:0,
+                totalTime: 0,
+                id: 0,
             },
         };
     },
@@ -113,13 +116,6 @@ export default {
             this.id = res.data.id;
             this.totalTime = res.data.totalTime;
             this.uid = res.data.uid;
-            let vo = {
-                name: res.data.name,
-                id: res.data.id,
-                freeTime: res.data.freeTime,
-                totalTime: res.data.totalTime,
-                uid: res.data.uid,
-            };
             //console.log(vo)
             //if(res.code===200){
             let ress = await volunteerMissionGet(
@@ -132,7 +128,7 @@ export default {
                 res.data.uid
             );
             //console.log(ress)
-            //tableData = ress.data
+            this.tableData = ress.data
         }
     },
     methods: {
@@ -150,6 +146,20 @@ export default {
                 alert("志愿者注册失败，请检查信息是否完整或稍后再试");
             }
         },
+        async handleEdit(index, row){
+          //利用row.id获取所在行的志愿服务id
+          let volunteerLog = {
+            id: row.id,
+            event: row.event,
+            totalTime: row.totalTime,
+            uid: this.uid
+          }
+          let res = await volunteerTaskTake(this.token, volunteerLog);
+          if(res.code === 200){
+            alert("任务接受成功")
+          }
+          location.reload()
+        }
     },
     computed: {
         ...mapState({

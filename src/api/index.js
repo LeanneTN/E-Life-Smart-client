@@ -396,11 +396,7 @@ export const volunteerApply = (uid, name, free_time, token) =>{
 }
 
 //接收志愿服务任务
-<<<<<<< HEAD
 export const volunteerMissionGet = (token, volunteer, name, id, free_time, total_time, uid) => {
-=======
-export const volunteerMissionGet = (volunteer, token) => {
->>>>>>> 2d6174f811b2def94c895e2f79a314b52624045f
   return requests({
     url: '/volunteer/get_volunteer_tasks',
     method: 'post',
@@ -410,7 +406,6 @@ export const volunteerMissionGet = (volunteer, token) => {
     },
     data: volunteer
   })
-<<<<<<< HEAD
 }
 
 //接受志愿服务（按照id将所接任务传给后端）
@@ -437,6 +432,4 @@ export const getCar = (token) =>{
     },
     data: volunteer
   })
-=======
->>>>>>> 2d6174f811b2def94c895e2f79a314b52624045f
 }

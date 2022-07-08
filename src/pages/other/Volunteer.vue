@@ -98,8 +98,8 @@ export default {
             volunteerObj :{
               name: "",
               freeTime: "",
-              totalTime,
-              id
+              totalTime: 0,
+              id: 0,
             }
         };
     },

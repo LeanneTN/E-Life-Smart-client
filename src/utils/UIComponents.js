@@ -6,7 +6,7 @@ import 'buefy/dist/buefy.css'
 
 //引入element-ui组件
 //梁田的引入
-import { DatePicker, Container, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select, Radio, RadioGroup, InputNumber, Header, Aside, Main} from 'element-ui'
+import { DatePicker, Container, Form, Input, FormItem, Checkbox, CheckboxGroup, Option, Col, Select, Radio, RadioGroup, InputNumber, Header, Aside, Main, Table, TableColumn} from 'element-ui'
 //我的引入
 import { Avatar, Badge, Button, Image, Dialog, Tabs, TabPane, Upload, MessageBox, Message} from 'element-ui'
 
@@ -41,6 +41,8 @@ const UIComponents = {
     Vue.use(Aside);
     Vue.use(Main);
     Vue.use(Container);
+    Vue.use(Table);
+    Vue.use(TableColumn);
     
     //日期格式化
     Date.prototype.format = function(fmt) { 

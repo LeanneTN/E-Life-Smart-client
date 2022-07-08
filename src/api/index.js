@@ -400,3 +400,17 @@ export const getCar = (token) =>{
     }
   })
 }
+
+//获取停车记录
+export const getParkRecord = (token, car) => {
+  return requests({
+    url: '/parking/park_info',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/json',
+      token
+    },
+    data: car
+  })
+}
+

@@ -179,64 +179,31 @@ export const reqUpdateRepair = (repair, token) => {
   })
 }
 
-//以下为与订单相关的部分
-//获取已登录账号的orderList
-export const reqOrderList = () => {
-  //发请求：axios发请求返回Promise对象
+//以下为与论坛相关的部分
+//创建话题
+export const reqCreateTopic = (topic, token) => {
   return requests({
-    url: `/order/orders/myOrders`,
-    method: 'get',
-  })
-}
-
-//生成订单并清空购物车中被选中的商品
-export const reqNewOrder = (expiryDate, billToFirstName, creditCard, billToLastName, billAddress1, billAddress2, billCity, billState, billZip, billCountry, cardType, shippingAddressRequired, shipToFirstName, shipToLastName, shipAddress1, shipAddress2, shipCity, shipState, shipZip, shipCountry) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: `/order/orders/newOrder`,
+    url: '/forum/topic',
     method: 'post',
-    params: {
-      expiryDate,
-      billToFirstName,
-      creditCard,
-      billToLastName,
-      billAddress1,
-      billAddress2,
-      billCity,
-      billState,
-      billZip,
-      billCountry,
-      cardType,
-      shippingAddressRequired,
-      shipToFirstName,
-      shipToLastName,
-      shipAddress1,
-      shipAddress2,
-      shipCity,
-      shipState,
-      shipZip,
-      shipCountry
-    }
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
+    data: topic
+  })
+}
+//获取所有话题
+export const reqGetAllTopic = (token) => {
+  return requests({
+    url: '/forum/topic',
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+      token
+    },
   })
 }
 
-//根据orderId获取order
-export const reqOrderById = (orderId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: `/order/orders/${orderId}`,
-    method: 'get',
-  })
-}
-
-//根据订单号获取该订单购买的商品
-export const reqOrderItemList = (orderId) => {
-  //发请求：axios发请求返回Promise对象
-  return requests({
-    url: `/order/orders/${orderId}/items`,
-    method: 'get',
-  })
-}
 
 // 以下是跟聊天室有关的
 //根据关键词搜索用户

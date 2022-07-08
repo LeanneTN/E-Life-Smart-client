@@ -1,6 +1,5 @@
-import Vue from 'vue'
-import App from './App.vue'
-
+import Vue from 'vue';
+import App from './App.vue';
 import UIComponents from '@/utils/UIComponents'
 
 //引入路由
@@ -8,7 +7,7 @@ import router from '@/router'
 //引入仓库
 import store from '@/store'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 UIComponents.init();
 

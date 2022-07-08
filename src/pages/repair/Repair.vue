@@ -168,6 +168,8 @@ export default {
         this.repair.start = new Date();
         this.repair.status = '已报修';
         
+        console.log(this.repair);
+
         let res = await reqSubmitRepair(this.repair, this.token);
         if(res.code == 200){
           this.$message({
@@ -203,14 +205,14 @@ export default {
       this.workingRepair = _util.copy(workingRepair);
     },
     async modifyRepair(){
-       console.log(this.workingRepair);
       let res = await reqUpdateRepair(this.workingRepair, this.token);
       if(res.code == 200){
-        workingRepair = this.workingRepair;
         this.$message({
           message: '更新报修信息成功！',
           type: 'success'
         });
+        await this.getRepairData();
+        this.dialogVisible = false;
       }else{
         this.$message.error('更新报修信息失败！');
       }

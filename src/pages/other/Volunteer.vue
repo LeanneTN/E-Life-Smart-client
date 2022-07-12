@@ -127,7 +127,7 @@ export default {
                 res.data.totalTime,
                 res.data.uid
             );
-            //console.log(ress)
+            console.log(ress)
             this.tableData = ress.data
         }
     },
@@ -139,6 +139,8 @@ export default {
                 this.freeTime,
                 this.token
             );
+            console.log(this.name)
+            console.log(res)
             if (res.code === 200) {
                 alert("志愿者注册成功");
                 this.volunteer = volunteerGetter(this.token);
